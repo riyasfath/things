@@ -1,0 +1,61 @@
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class ProducerConsumer{
+public static void main(String[] args)
+{
+BlockingQueue<Integer> HP=new LinkedBlockingQueue <Integer>();
+Producer P= new Producer (HP);
+Consumer C= new Consumer(HP);
+P.start();
+C.start();
+}
+}
+
+class Producer extends Thread
+{
+private BlockingQueue<Integer>HP;
+
+public Producer(BlockingQueue<Integer> pr)
+{
+super("PRODUCER");
+this.HP=pr;
+}
+public void run(){
+for (int i=0;i<10;i++)
+{
+try
+
+{
+
+System.out.println(getName()+"Produced" +i);
+HP.put(i);
+
+
+Thread.sleep(100);
+}catch(InterruptedException e){
+e.printStackTrace();
+}
+}
+}
+}
+
+class Consumer extends Thread{
+private BlockingQueue<Integer>HP;
+public Consumer(BlockingQueue <Integer>pr){
+super("Consumer");
+this.HP=pr;
+}
+public void run(){
+try
+{
+while (true){
+Integer item=HP.take();
+System.out.println(getName()+"Consumed"+ item);
+}
+} catch(InterruptedException e){
+e.printStackTrace();
+
+}
+}
+}
